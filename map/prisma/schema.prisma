@@ -1,0 +1,75 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+datasource db {
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  extensions = [postgis]
+}
+
+model Group {
+  id         Int        @id @default(autoincrement())
+  name       String
+  categories Category[]
+  userId     Int?
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+}
+
+model Category {
+  id        Int      @id @default(autoincrement())
+  name      String
+  color     String?
+  icon      String?
+  group     Group    @relation(fields: [groupId], references: [id])
+  groupId   Int
+  userId    Int?
+  places    Place[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Place {
+  id          Int      @id @default(autoincrement())
+  name        String
+  category    Category @relation(fields: [categoryId], references: [id])
+  categoryId  Int
+  lat         Float
+  lng         Float
+  description String?
+  wardId      Int?
+  photos      String[]
+  address     String?
+  email       String?
+  phone       String?
+  website     String?
+  status      Int      @default(0)
+  userId      Int?
+  reviews     Review[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Point {
+  id       Int                                   @id @default(autoincrement())
+  name     String                                @unique
+  location Unsupported("geography(Point, 4326)")
+}
+
+model Review {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  place     Place    @relation(fields: [placeId], references: [id])
+  placeId   Int
+  content   String
+  stars     Int
+  photos    String[]
+  status    Int?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

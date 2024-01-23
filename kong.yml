@@ -1,0 +1,50 @@
+_format_version: "3.0"
+_transform: true
+
+services:
+  - name: log-svc
+    url: http://log:3000
+    routes:
+      - name: log-routes
+        paths:
+          - /log
+        strip_path: true
+  - name: config-svc
+    url: http://cfg:3000
+    routes:
+      - name: config-routes
+        paths:
+          - /config
+        strip_path: true
+  - name: unit-svc
+    url: http://unit:3000
+    routes:
+      - name: unit-routes
+        paths:
+          - /unit
+        strip_path: true
+  - name: company-svc
+    url: http://company:3000
+    routes:
+      - name: company-routes
+        paths:
+          - /company
+        strip_path: true
+  - name: user-svc
+    url: http://user:3000
+    routes:
+      - name: user-routes
+        paths:
+          - /user
+        strip_path: true
+
+consumers:
+  - username: cantho.wiki
+    jwt_secrets:
+      - algorithm: HS256
+        key: pmnLNEGiEE3Yz8XL6U
+        secret: HrjpUG82Hbfz7ZXsIw
+
+plugins:
+  - name: jwt
+    enabled: false
