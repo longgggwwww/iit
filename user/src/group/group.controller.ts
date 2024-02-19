@@ -24,7 +24,7 @@ import { GroupService } from "./group.service";
 export class GroupController {
   constructor(
     private group: GroupService,
-    @Inject(REQUEST) private req: any,
+    @Inject(REQUEST) private req: any
   ) {
     if (req.headers) {
       req.headers.entity = "permissionGroup";
@@ -35,7 +35,7 @@ export class GroupController {
   create(@Body() dto: CreateGroupDto) {
     return this.group.create({
       ...dto,
-      userId: this.req.user?.id,
+      createdById: this.req.user?.id,
     });
   }
 

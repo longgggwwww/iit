@@ -25,7 +25,7 @@ import { RoleService } from "./role.service";
 export class RoleController {
   constructor(
     private role: RoleService,
-    @Inject(REQUEST) private req: any,
+    @Inject(REQUEST) private req: any
   ) {
     if (req.headers) {
       req.headers.entity = "role";
@@ -36,7 +36,7 @@ export class RoleController {
   create(@Body() dto: CreateRoleDto) {
     return this.role.create({
       ...dto,
-      userId: this.req.user?.id,
+      createdById: this.req.user?.id,
     });
   }
 

@@ -24,7 +24,7 @@ import { UserService } from "./user.service";
 export class UserController {
   constructor(
     private user: UserService,
-    @Inject(REQUEST) private req: any,
+    @Inject(REQUEST) private req: any
   ) {
     if (req.headers) {
       req.headers.entity = "user";
@@ -35,7 +35,7 @@ export class UserController {
   create(@Body() dto: CreateUserDto) {
     return this.user.create({
       ...dto,
-      userId: this.req.user?.id,
+      createdById: this.req.user?.id,
     });
   }
 

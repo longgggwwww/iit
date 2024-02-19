@@ -24,7 +24,7 @@ import { PermissionService } from "./permission.service";
 export class PermissionController {
   constructor(
     private permission: PermissionService,
-    @Inject(REQUEST) private req: any,
+    @Inject(REQUEST) private req: any
   ) {
     if (req.headers) {
       req.headers.entity = "permission";
@@ -35,7 +35,7 @@ export class PermissionController {
   create(@Body() dto: CreatePermissionDto) {
     return this.permission.create({
       ...dto,
-      userId: this.req.user?.id,
+      createdById: this.req.user?.id,
     });
   }
 
@@ -52,7 +52,7 @@ export class PermissionController {
   @Patch(":id")
   update(
     @Param("id", ParseIntPipe) id: number,
-    @Body() dto: UpdatePermissionDto,
+    @Body() dto: UpdatePermissionDto
   ) {
     return this.permission.update(id, dto);
   }

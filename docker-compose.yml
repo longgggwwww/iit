@@ -96,16 +96,16 @@ services:
   #   volumes:
   #     - company-postgres:/var/lib/postgresql/data
 
-  # user-postgres:
-  #   image: postgres:14
-  #   container_name: user-postgres
-  #   restart: always
-  #   environment:
-  #     - POSTGRES_USER=${USER_POSTGRES_USER:?}
-  #     - POSTGRES_PASSWORD=${USER_POSTGRES_PASSWORD:?}
-  #     - POSTGRES_DB=user
-  #   volumes:
-  #     - user-postgres:/var/lib/postgresql/data
+  user-postgres:
+    image: postgres:14
+    container_name: user-postgres
+    restart: always
+    environment:
+      - POSTGRES_USER=${USER_POSTGRES_USER:?}
+      - POSTGRES_PASSWORD=${USER_POSTGRES_PASSWORD:?}
+      - POSTGRES_DB=user
+    volumes:
+      - user-postgres:/var/lib/postgresql/data
 
   # map-postgis:
   #   image: postgis/postgis:13-3.1-alpine
@@ -162,7 +162,7 @@ services:
       dockerfile: Dockerfile.dev # development
     environment: # local
       - DATABASE_URL=postgresql://${UNIT_POSTGRES_USER:?}:${UNIT_POSTGRES_PASSWORD:?}@unit-postgres:5432/unit?schema=public
-      - RB_URL=amqp://${RABBITMQ_DEFAULT_USER}:${RABBITMQ_DEFAULT_PASS}@rabbitmq:5672
+      - RB_URL=amqp://${RABBITMQ_DEFAULT_USER:?}:${RABBITMQ_DEFAULT_PASS:?}@rabbitmq:5672
       - QUEUE=unit
       - LOG_RB_URL=amqp://${RABBITMQ_DEFAULT_USER:?}:${RABBITMQ_DEFAULT_PASS:?}@rabbitmq:5672
       - LOG_QUEUE=log
@@ -192,25 +192,25 @@ services:
   #     - rabbitmq
   #     - company-postgres
 
-  # user:
-  #   container_name: user-nestjs
-  #   image: user
-  #   build:
-  #     context: ./user
-  #     dockerfile: Dockerfile.dev # development
-  #   environment: # local
-  #     - DATABASE_URL=postgresql://${USER_POSTGRES_USER:?}:${USER_POSTGRES_PASSWORD:?}@user-postgres:5432/user?schema=public
-  #     - RB_URL=amqp://${RABBITMQ_DEFAULT_USER}:${RABBITMQ_DEFAULT_PASS}@rabbitmq:5672
-  #     - QUEUE=user
-  #     - LOG_RB_URL=amqp://${RABBITMQ_DEFAULT_USER:?}:${RABBITMQ_DEFAULT_PASS:?}@rabbitmq:5672
-  #     - LOG_QUEUE=log
-  #     - CFG_RB_URL=amqp://${RABBITMQ_DEFAULT_USER:?}:${RABBITMQ_DEFAULT_PASS:?}@rabbitmq:5672
-  #     - CFG_QUEUE=cfg
-  #   volumes:
-  #     - ./user:/app
-  #   depends_on:
-  #     - rabbitmq
-  #     - user-postgres
+  user:
+    container_name: user-nestjs
+    image: user
+    build:
+      context: ./user
+      dockerfile: Dockerfile.dev # development
+    environment: # local
+      - DATABASE_URL=postgresql://${USER_POSTGRES_USER:?}:${USER_POSTGRES_PASSWORD:?}@user-postgres:5432/user?schema=public
+      - RB_URL=amqp://${RABBITMQ_DEFAULT_USER:?}:${RABBITMQ_DEFAULT_PASS:?}@rabbitmq:5672
+      - QUEUE=user
+      - LOG_RB_URL=amqp://${RABBITMQ_DEFAULT_USER:?}:${RABBITMQ_DEFAULT_PASS:?}@rabbitmq:5672
+      - LOG_QUEUE=log
+      - CFG_RB_URL=amqp://${RABBITMQ_DEFAULT_USER:?}:${RABBITMQ_DEFAULT_PASS:?}@rabbitmq:5672
+      - CFG_QUEUE=cfg
+    volumes:
+      - ./user:/app
+    depends_on:
+      - rabbitmq
+      - user-postgres
 
   # map:
   #   container_name: map-nestjs

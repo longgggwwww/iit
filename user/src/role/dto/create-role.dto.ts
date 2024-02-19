@@ -24,11 +24,11 @@ export class CreateRoleDto {
       allowInfinity: false,
       allowNaN: false,
     },
-    { each: true },
+    { each: true }
   )
   @IsArray()
   @IsNotEmpty()
   permissionIds: number[];
 
-  userId?: number;
+  createdById?: number;
 }

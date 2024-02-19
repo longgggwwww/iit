@@ -1,0 +1,41 @@
+groups:
+  - name: Quản lý nhóm quyền
+    permissions:
+      - name: Xem danh sách nhóm quyền
+        code: READ_GROUPS
+      - name: Tạo nhóm quyền
+        code: CREATE_GROUPS
+      - name: Cập nhật nhóm quyền
+        code: UPDATE_GROUPS
+      - name: Xoá nhóm quyền
+        code: DELETE_GROUPS
+  - name: Quản lý quyền
+    permissions:
+      - name: Xem danh sách quyền
+        code: READ_PERMISSIONS
+      - name: Tạo quyền
+        code: CREATE_PERMISSIONS
+      - name: Cập nhật quyền
+        code: UPDATE_PERMISSIONS
+      - name: Xoá quyền
+        code: DELETE_PERMISSIONS
+  - name: Quản lý vai trò
+    permissions:
+      - name: Xem danh sách nhóm quyền
+        code: READ_GROUPS
+  - name: Quản lý công ty
+    permissions:
+      - name: Xem danh sách nhóm quyền
+        code: READ_GROUPS
+  - name: Quản lý phòng ban
+    permissions:
+      - name: Xem danh sách nhóm quyền
+        code: READ_GROUPS
+  - name: Quản lý chức vụ
+    permissions:
+      - name: Xem danh sách nhóm quyền
+        code: READ_GROUPS
+  - name: Quản lý chức vụ
+    permissions:
+      - name: Xem danh sách nhóm quyền
+        code: READ_GROUPS

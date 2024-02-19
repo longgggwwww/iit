@@ -18,10 +18,10 @@ export class DistrictService {
         userId,
       },
       include: {
-        Province: {
+        province: {
           include: {
             _count: true,
-            District: {
+            district: {
               take: 5,
               orderBy: {
                 name: "asc",
@@ -49,7 +49,7 @@ export class DistrictService {
         : undefined,
       include: {
         _count: true,
-        Province: {
+        province: {
           include: {
             _count: true,
           },
@@ -65,10 +65,10 @@ export class DistrictService {
       },
       include: {
         _count: true,
-        Province: {
+        province: {
           include: {
             _count: true,
-            District: {
+            district: {
               take: 5,
               orderBy: {
                 name: "asc",
@@ -76,7 +76,7 @@ export class DistrictService {
             },
           },
         },
-        Ward: {
+        ward: {
           take: 5,
           orderBy: {
             name: "asc",
@@ -97,14 +97,14 @@ export class DistrictService {
       data: {
         name,
         code,
-        Province: provinceId
+        province: provinceId
           ? {
               connect: {
                 id: provinceId,
               },
             }
           : undefined,
-        Ward:
+        ward:
           wardIds && wardIds.length > 0
             ? {
                 set: wardIds.map((id) => ({ id })),
@@ -113,10 +113,10 @@ export class DistrictService {
       },
       include: {
         _count: true,
-        Province: {
+        province: {
           include: {
             _count: true,
-            District: {
+            district: {
               take: 5,
               orderBy: {
                 name: "asc",
@@ -124,7 +124,7 @@ export class DistrictService {
             },
           },
         },
-        Ward: {
+        ward: {
           take: 5,
           orderBy: {
             name: "asc",

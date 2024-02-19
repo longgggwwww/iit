@@ -1,6 +1,7 @@
 generator client {
-  provider      = "prisma-client-js"
-  binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
+  provider        = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
+  binaryTargets   = ["native", "linux-musl-openssl-3.0.x"]
 }
 
 datasource db {
@@ -15,7 +16,7 @@ model Province {
   userId    Int?
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
-  District  District[]
+  district  District[]
 }
 
 model District {
@@ -26,8 +27,8 @@ model District {
   userId     Int?
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
-  Province   Province @relation(fields: [provinceId], references: [id])
-  Ward       Ward[]
+  province   Province @relation(fields: [provinceId], references: [id])
+  ward       Ward[]
 }
 
 model Ward {
@@ -38,5 +39,5 @@ model Ward {
   userId     Int?
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
-  District   District @relation(fields: [districtId], references: [id])
+  district   District @relation(fields: [districtId], references: [id])
 }

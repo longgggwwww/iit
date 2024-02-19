@@ -20,7 +20,7 @@ async function bootstrap() {
         enableImplicitConversion: true,
       },
     }),
-    new TrimPipe(),
+    new TrimPipe()
   );
 
   const { httpAdapter } = app.get(HttpAdapterHost);

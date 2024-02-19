@@ -15,7 +15,7 @@ export class UserService {
     @Inject("CFG_SERVICE") private cfg: ClientProxy
   ) {}
 
-  async create({ username, password, userId }: CreateUserDto) {
+  async create({ username, password, createdById }: CreateUserDto) {
     const { role } = await firstValueFrom(this.cfg.send("settings", {}));
     const salt = await bcrypt.genSalt(10);
     const hash = await bcrypt.hash(password, salt);
@@ -28,6 +28,9 @@ export class UserService {
             id: role.id,
           },
         },
+        type: "business",
+        provider: "local",
+        gender: "female",
       },
       include: {
         role: {

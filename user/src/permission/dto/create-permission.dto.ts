@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
+import { IsNotEmpty, IsNumber, IsString } from "class-validator";
 
 export class CreatePermissionDto {
   @IsString()
@@ -13,7 +13,5 @@ export class CreatePermissionDto {
   @IsNotEmpty()
   groupId: number;
 
-  @IsNumber()
-  @IsOptional()
-  userId?: number;
+  createdById?: number;
 }

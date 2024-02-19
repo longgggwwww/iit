@@ -9,7 +9,7 @@ import { UpdatePermissionDto } from "./dto/update-permission.dto";
 export class PermissionService {
   constructor(private prisma: PrismaService) {}
 
-  async create({ name, code, groupId, userId }: CreatePermissionDto) {
+  async create({ name, code, groupId, createdById }: CreatePermissionDto) {
     return this.prisma.permission.create({
       data: {
         name,
@@ -19,10 +19,10 @@ export class PermissionService {
             id: groupId,
           },
         },
-        user: userId
+        createdBy: createdById
           ? {
               connect: {
-                id: userId,
+                id: createdById,
               },
             }
           : undefined,
@@ -33,7 +33,7 @@ export class PermissionService {
             _count: true,
           },
         },
-        user: {
+        createdBy: {
           include: {
             _count: true,
           },
@@ -69,7 +69,7 @@ export class PermissionService {
             _count: true,
           },
         },
-        user: {
+        createdBy: {
           include: {
             _count: true,
           },
@@ -93,7 +93,7 @@ export class PermissionService {
             _count: true,
           },
         },
-        user: {
+        createdBy: {
           include: {
             _count: true,
           },
@@ -104,7 +104,7 @@ export class PermissionService {
 
   async update(
     id: number,
-    { name, code, groupId, roleIds }: UpdatePermissionDto,
+    { name, code, groupId, roleIds }: UpdatePermissionDto
   ) {
     return this.prisma.permission.update({
       where: { id },
@@ -137,7 +137,7 @@ export class PermissionService {
             _count: true,
           },
         },
-        user: {
+        createdBy: {
           include: {
             _count: true,
           },

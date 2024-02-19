@@ -9,14 +9,14 @@ import { UpdateGroupDto } from "./dto/update-group.dto";
 export class GroupService {
   constructor(private prisma: PrismaService) {}
 
-  async create({ name, userId }: CreateGroupDto) {
+  async create({ name, createdById }: CreateGroupDto) {
     return this.prisma.group.create({
       data: {
         name,
-        userId,
+        createdById,
       },
       include: {
-        user: true,
+        createdBy: true,
       },
     });
   }
@@ -37,7 +37,7 @@ export class GroupService {
         : undefined,
       include: {
         _count: true,
-        user: true,
+        createdBy: true,
       },
     });
   }
@@ -47,12 +47,12 @@ export class GroupService {
       where: { id },
       include: {
         _count: true,
+        createdBy: true,
         permissions: {
           include: {
             _count: true,
           },
         },
-        user: true,
       },
     });
   }
@@ -71,12 +71,12 @@ export class GroupService {
       },
       include: {
         _count: true,
+        createdBy: true,
         permissions: {
           include: {
             _count: true,
           },
         },
-        user: true,
       },
     });
   }

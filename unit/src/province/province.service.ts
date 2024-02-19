@@ -46,7 +46,7 @@ export class ProvinceService {
       },
       include: {
         _count: true,
-        District: {
+        district: {
           take: 5,
           orderBy: {
             name: "asc",
@@ -67,7 +67,7 @@ export class ProvinceService {
       data: {
         name,
         code,
-        District:
+        district:
           districtIds && districtIds.length > 0
             ? {
                 set: districtIds.map((id) => ({ id })),
@@ -76,7 +76,7 @@ export class ProvinceService {
       },
       include: {
         _count: true,
-        District: {
+        district: {
           take: 5,
           orderBy: {
             name: "asc",

@@ -18,18 +18,18 @@ export class WardService {
         userId,
       },
       include: {
-        District: {
+        district: {
           include: {
             _count: true,
-            Province: {
+            province: {
               include: {
                 _count: true,
               },
             },
-            Ward: {
+            ward: {
               take: 5,
               orderBy: {
-                id: "desc",
+                name: "desc",
               },
             },
           },
@@ -53,10 +53,10 @@ export class WardService {
           }
         : undefined,
       include: {
-        District: {
+        district: {
           include: {
             _count: true,
-            Province: true,
+            province: true,
           },
         },
       },
@@ -67,10 +67,10 @@ export class WardService {
     return this.prisma.ward.findUniqueOrThrow({
       where: { id },
       include: {
-        District: {
+        district: {
           include: {
             _count: true,
-            Province: true,
+            province: true,
           },
         },
       },
@@ -83,7 +83,7 @@ export class WardService {
       data: {
         name,
         code,
-        District: districtId
+        district: districtId
           ? {
               connect: {
                 id: districtId,
@@ -92,10 +92,10 @@ export class WardService {
           : undefined,
       },
       include: {
-        District: {
+        district: {
           include: {
             _count: true,
-            Province: true,
+            province: true,
           },
         },
       },

@@ -9,7 +9,13 @@ import { UpdateRoleDto } from "./dto/update-role.dto";
 export class RoleService {
   constructor(private prisma: PrismaService) {}
 
-  async create({ name, code, roleId, permissionIds, userId }: CreateRoleDto) {
+  async create({
+    name,
+    code,
+    roleId,
+    permissionIds,
+    createdById,
+  }: CreateRoleDto) {
     return this.prisma.role.create({
       data: {
         name,
@@ -27,10 +33,10 @@ export class RoleService {
               },
             }
           : undefined,
-        user: userId
+        createdBy: createdById
           ? {
               connect: {
-                id: userId,
+                id: createdById,
               },
             }
           : undefined,
@@ -47,7 +53,7 @@ export class RoleService {
             _count: true,
           },
         },
-        user: {
+        createdBy: {
           include: {
             _count: true,
           },
@@ -88,7 +94,7 @@ export class RoleService {
           },
         },
         users: true,
-        user: {
+        createdBy: {
           include: {
             _count: true,
           },
@@ -118,7 +124,7 @@ export class RoleService {
           },
         },
         users: true,
-        user: {
+        createdBy: {
           include: {
             _count: true,
           },
@@ -168,7 +174,7 @@ export class RoleService {
           },
         },
         users: true,
-        user: {
+        createdBy: {
           include: {
             _count: true,
           },

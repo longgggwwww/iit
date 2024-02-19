@@ -5,5 +5,5 @@ export class CreateGroupDto {
   @IsNotEmpty()
   name: string;
 
-  userId?: number;
+  createdById?: number;
 }
