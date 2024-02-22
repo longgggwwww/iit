@@ -6,7 +6,7 @@ export class DeleteUserDto {
       allowInfinity: false,
       allowNaN: false,
     },
-    { each: true },
+    { each: true }
   )
   @IsArray()
   ids: number[];

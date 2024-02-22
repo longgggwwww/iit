@@ -35,7 +35,7 @@ export class UserController {
   create(@Body() dto: CreateUserDto) {
     return this.user.create({
       ...dto,
-      createdById: this.req.user?.id,
+      userId: this.req.user?.id,
     });
   }
 

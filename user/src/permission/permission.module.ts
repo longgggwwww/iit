@@ -1,10 +1,9 @@
-import { Module } from "@nestjs/common";
-import { PrismaService } from "src/prisma/prisma.service";
-import { PermissionController } from "./permission.controller";
-import { PermissionService } from "./permission.service";
+import { Module } from '@nestjs/common';
+import { PermissionService } from './permission.service';
+import { PermissionController } from './permission.controller';
 
 @Module({
   controllers: [PermissionController],
-  providers: [PermissionService, PrismaService],
+  providers: [PermissionService],
 })
 export class PermissionModule {}

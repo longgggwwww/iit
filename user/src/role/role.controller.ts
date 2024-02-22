@@ -36,7 +36,7 @@ export class RoleController {
   create(@Body() dto: CreateRoleDto) {
     return this.role.create({
       ...dto,
-      createdById: this.req.user?.id,
+      userId: this.req.user?.id,
     });
   }
 
@@ -67,7 +67,10 @@ export class RoleController {
 
   // ----------- Microservice ---------------
 
-  @MessagePattern("role_findOne")
+  @MessagePattern({
+    target: "role",
+    cmd: "find_one",
+  })
   async _findOne(@Payload() id: number) {
     try {
       return await this.role.findOne(id);

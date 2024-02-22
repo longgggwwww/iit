@@ -9,5 +9,5 @@ export class CreateUserDto {
   @IsNotEmpty()
   password: string;
 
-  createdById?: number;
+  userId?: number;
 }

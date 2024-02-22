@@ -22,102 +22,6 @@ services:
     volumes:
       - ./kong.yml:/opt/kong/kong.yml
 
-  rabbitmq:
-    image: rabbitmq:management
-    container_name: rabbitmq
-    ports:
-      - 15672:15672
-    volumes:
-      - rabbitmq_data:/var/lib/rabbitmq
-    environment:
-      - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER:?}
-      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS:?}
----
-services:
-  # adminer:
-  #   image: adminer
-  #   container_name: adminer
-  #   restart: always
-  #   ports:
-  #     - 8080:8080
-  #   environment:
-  #     - ADMINER_DESIGN=pokorny
-  #   depends_on:
-  #     - log-postgres
-  #     - cfg-postgres
-  #     - unit-postgres
-  #     - company-postgres
-  #     - user-postgres
-  #     - map-postgis
-
-  # log-postgres:
-  #   image: postgres:14
-  #   container_name: log-postgres
-  #   restart: always
-  #   environment:
-  #     - POSTGRES_USER=${LOG_POSTGRES_USER:?}
-  #     - POSTGRES_PASSWORD=${LOG_POSTGRES_PASSWORD:?}
-  #     - POSTGRES_DB=log
-  #   volumes:
-  #     - log-postgres:/var/lib/postgresql/data
-
-  # cfg-postgres:
-  #   image: postgres:14
-  #   container_name: cfg-postgres
-  #   restart: always
-  #   environment:
-  #     - POSTGRES_USER=${CFG_POSTGRES_USER:?}
-  #     - POSTGRES_PASSWORD=${CFG_POSTGRES_PASSWORD:?}
-  #     - POSTGRES_DB=cfg
-  #   volumes:
-  #     - cfg-postgres:/var/lib/postgresql/data
-
-  unit-postgres:
-    image: postgres:14
-    container_name: unit-postgres
-    restart: always
-    ports:
-      - 5432:5432
-    environment:
-      - POSTGRES_USER=${UNIT_POSTGRES_USER:?}
-      - POSTGRES_PASSWORD=${UNIT_POSTGRES_PASSWORD:?}
-      - POSTGRES_DB=unit
-    volumes:
-      - unit-postgres:/var/lib/postgresql/data
-
-  # company-postgres:
-  #   image: postgres:14
-  #   container_name: company-postgres
-  #   restart: always
-  #   environment:
-  #     - POSTGRES_USER=${COM_POSTGRES_USER:?}
-  #     - POSTGRES_PASSWORD=${COM_POSTGRES_PASSWORD:?}
-  #     - POSTGRES_DB=company
-  #   volumes:
-  #     - company-postgres:/var/lib/postgresql/data
-
-  user-postgres:
-    image: postgres:14
-    container_name: user-postgres
-    restart: always
-    environment:
-      - POSTGRES_USER=${USER_POSTGRES_USER:?}
-      - POSTGRES_PASSWORD=${USER_POSTGRES_PASSWORD:?}
-      - POSTGRES_DB=user
-    volumes:
-      - user-postgres:/var/lib/postgresql/data
-
-  # map-postgis:
-  #   image: postgis/postgis:13-3.1-alpine
-  #   container_name: map-postgis
-  #   restart: always
-  #   environment:
-  #     - POSTGRES_USER=${MAP_POSTGRES_USER:?}
-  #     - POSTGRES_PASSWORD=${MAP_POSTGRES_PASSWORD:?}
-  #     - POSTGRES_DB=map
-  #   volumes:
-  #     - map-postgis:/var/lib/postgresql/data
-
   # log:
   #   container_name: log-nestjs
   #   image: log
@@ -168,9 +72,6 @@ services:
       - LOG_QUEUE=log
     volumes:
       - ./unit:/app
-    depends_on:
-      - rabbitmq
-      - unit-postgres
 
   # company:
   #   container_name: company-nestjs
@@ -208,9 +109,6 @@ services:
       - CFG_QUEUE=cfg
     volumes:
       - ./user:/app
-    depends_on:
-      - rabbitmq
-      - user-postgres
 
   # map:
   #   container_name: map-nestjs
@@ -231,19 +129,3 @@ services:
   #   depends_on:
   #     - rabbitmq
   #     - map-postgis
-
-volumes:
-  rabbitmq_data:
-    name: rabbitmq
-  log-postgres:
-    name: log-postgres-db
-  cfg-postgres:
-    name: cfg-postgres-db
-  unit-postgres:
-    name: unit-postgres-db
-  company-postgres:
-    name: company-postgres-db
-  user-postgres:
-    name: user-postgres-db
-  map-postgis:
-    name: map-postgis-db

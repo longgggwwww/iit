@@ -10,86 +10,55 @@ datasource db {
 }
 
 model User {
-  id          Int          @id @default(autoincrement())
-  username    String       @unique
-  password    String
-  type        Type         @default(review)
-  provider    Provider     @default(local)
-  fullName    String?
-  birthday    DateTime?
-  gender      Gender       @default(other)
-  email       String?      @unique
-  phone       String?      @unique
-  photo       String?
-  positionId  Int?
-  wardId      Int?
-  address     String?
-  isActive    Boolean      @default(false)
-  roleId      Int
-  successorId Int?         @unique
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
-  groups      Group[]
-  permissions Permission[]
-  roles       Role[]       @relation("UserToRoles")
-  role        Role         @relation("UserToRole", fields: [roleId], references: [id])
-  successor   User?        @relation("UserToUser", fields: [successorId], references: [id])
-  predecessor User?        @relation("UserToUser")
+  id           Int       @id @default(autoincrement())
+  username     String    @unique
+  password     String
+  type         Type
+  provider     Provider  @default(LOCAL)
+  fullName     String?
+  dob          DateTime?
+  gender       Gender    @default(OTHER)
+  email        String?   @unique
+  phone        String?   @unique
+  photo        String?
+  positionId   Int?
+  wardId       Int?
+  address      String?
+  isActive     Boolean   @default(false)
+  roleId       Int
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  createdRoles Role[]
+  role         Role      @relation("UserToRole", fields: [roleId], references: [id])
 }
 
 model Role {
-  id          Int          @id @default(autoincrement())
-  name        String
-  code        String       @unique
-  successorId Int?         @unique
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
-  createdById Int?
-  createdBy   User?        @relation("UserToRoles", fields: [createdById], references: [id])
-  successor   Role?        @relation("RoleToRole", fields: [successorId], references: [id])
-  predecessor Role?        @relation("RoleToRole")
-  users       User[]       @relation("UserToRole")
-  permissions Permission[] @relation("PermissionsToRoles")
-}
-
-model Group {
-  id          Int          @id @default(autoincrement())
-  name        String
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
-  createdById Int?
-  createdBy   User?        @relation(fields: [createdById], references: [id])
-  permissions Permission[]
-}
-
-model Permission {
   id          Int      @id @default(autoincrement())
   name        String
   code        String   @unique
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-  groupId     Int?
+  permissions String[]
   createdById Int?
   createdBy   User?    @relation(fields: [createdById], references: [id])
-  group       Group?   @relation(fields: [groupId], references: [id])
-  roles       Role[]   @relation("PermissionsToRoles")
+  users       User[]   @relation("UserToRole")
 }
 
 enum Gender {
-  male
-  female
-  other
+  MALE
+  FEMALE
+  OTHER
 }
 
 enum Type {
-  manager
-  business
-  review
+  MANAGER
+  BUSINESS
+  EXPERIENCE
 }
 
 enum Provider {
-  local
-  google
-  facebook
-  github
+  LOCAL
+  GOOGLE
+  FACEBOOK
+  GIHUB
 }
