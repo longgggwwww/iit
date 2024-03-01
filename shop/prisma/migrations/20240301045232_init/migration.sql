@@ -4,6 +4,7 @@ CREATE TYPE "Gender" AS ENUM ('MALE', 'FEMALE', 'OTHER');
 -- CreateTable
 CREATE TABLE "User" (
     "id" SERIAL NOT NULL,
+    "site" TEXT,
     "username" TEXT NOT NULL,
     "password" TEXT NOT NULL,
     "isAdmin" BOOLEAN NOT NULL DEFAULT false,
@@ -24,8 +25,6 @@ CREATE TABLE "Profile" (
     "email" TEXT,
     "phone" TEXT,
     "photo" TEXT,
-    "positionId" INTEGER,
-    "wardId" INTEGER,
     "address" TEXT,
     "userId" INTEGER NOT NULL,
 
@@ -80,7 +79,7 @@ CREATE TABLE "Product" (
     "inventory" INTEGER NOT NULL,
     "inventoryMin" INTEGER,
     "inventoryMax" INTEGER,
-    "weight" DOUBLE PRECISION NOT NULL,
+    "weight" DOUBLE PRECISION,
     "description" TEXT,
     "note" TEXT,
     "categoryId" INTEGER,
@@ -123,6 +122,9 @@ CREATE TABLE "Store" (
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_username_key" ON "User"("username");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "User_site_username_key" ON "User"("site", "username");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Profile_email_key" ON "Profile"("email");
