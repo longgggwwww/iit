@@ -1,3 +1,4 @@
+import { Transform } from 'class-transformer';
 import {
   IsAlphanumeric,
   IsBoolean,
@@ -13,20 +14,22 @@ import {
 export class CreateUserDto {
   @IsNotEmpty()
   @IsString()
-  @Length(5, 20)
+  @Length(3, 20)
   @IsAlphanumeric()
   @Matches(/^[a-zA-Z0-9_]+$/, {
     message: 'site can only contain letters, numbers, and underscores',
   })
+  @Transform(({ value }) => String(value).toLocaleLowerCase())
   site: string;
 
   @IsNotEmpty()
   @IsString()
-  @Length(5, 20)
+  @Length(3, 20)
   @IsAlphanumeric()
   @Matches(/^[a-zA-Z0-9_]+$/, {
     message: 'username can only contain letters, numbers, and underscores',
   })
+  @Transform(({ value }) => String(value).toLocaleLowerCase())
   username: string;
 
   @IsNotEmpty()
