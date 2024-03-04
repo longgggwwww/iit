@@ -1,28 +1,53 @@
 import {
+  IsAlphanumeric,
   IsBoolean,
   IsNotEmpty,
+  IsNumber,
   IsOptional,
   IsString,
   IsStrongPassword,
+  Length,
+  Matches,
 } from 'class-validator';
 
 export class CreateUserDto {
-  @IsString()
   @IsNotEmpty()
+  @IsString()
+  @Length(5, 20)
+  @IsAlphanumeric()
+  @Matches(/^[a-zA-Z0-9_]+$/, {
+    message: 'site can only contain letters, numbers, and underscores',
+  })
+  site: string;
+
+  @IsNotEmpty()
+  @IsString()
+  @Length(5, 20)
+  @IsAlphanumeric()
+  @Matches(/^[a-zA-Z0-9_]+$/, {
+    message: 'username can only contain letters, numbers, and underscores',
+  })
   username: string;
 
-  @IsStrongPassword()
   @IsNotEmpty()
+  @IsStrongPassword({
+    minLength: 6,
+    minLowercase: 0,
+    minNumbers: 0,
+    minUppercase: 0,
+    minSymbols: 0,
+  })
   password: string;
 
-  @IsBoolean()
   @IsOptional()
+  @IsBoolean()
   isAdmin?: boolean = false;
 
-  @IsBoolean()
   @IsOptional()
+  @IsBoolean()
   isActive?: boolean = false;
 
   @IsNotEmpty()
+  @IsNumber()
   roleId: number;
 }

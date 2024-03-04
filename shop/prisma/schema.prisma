@@ -1,5 +1,7 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextIndex", "fullTextSearch", "postgresqlExtensions"]
+  binaryTargets   = ["native", "linux-musl-openssl-3.0.x"]
 }
 
 datasource db {
@@ -8,68 +10,84 @@ datasource db {
 }
 
 model User {
-  id         Int        @id @default(autoincrement())
-  site       String?
-  username   String     @unique
-  password   String
-  isAdmin    Boolean    @default(false)
-  isActive   Boolean    @default(false)
-  roleId     Int
-  createdAt  DateTime   @default(now())
-  updatedAt  DateTime   @updatedAt
-  branchs    Branch[]
-  brands     Brand[]
-  categories Category[]
-  products   Product[]
-  profile    Profile?
-  role       Role       @relation(fields: [roleId], references: [id])
+  id        Int       @id @default(autoincrement())
+  site      String    @unique
+  username  String    @unique
+  password  String
+  isAdmin   Boolean?  @default(false)
+  isActive  Boolean?  @default(false)
+  roleId    Int
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  storeId   Int?
+  products  Product[]
+  profile   Profile?
+  stores    Store[]   @relation("Owner")
+  role      Role      @relation(fields: [roleId], references: [id])
+  store     Store?    @relation(fields: [storeId], references: [id])
+  branchs   Branch[]
 
   @@unique([site, username])
 }
 
 model Profile {
-  id      Int       @id @default(autoincrement())
-  name    String?
-  dob     DateTime?
-  gender  Gender    @default(OTHER)
-  email   String?   @unique
-  phone   String?   @unique
-  photo   String?
-  address String?
-  userId  Int       @unique
-  user    User      @relation(fields: [userId], references: [id])
+  id      Int      @id @default(autoincrement())
+  name    String
+  dob     DateTime
+  gender  Gender   @default(OTHER)
+  email   String   @unique
+  phone   String   @unique
+  photo   String
+  address String
+  userId  Int      @unique
+  user    User     @relation(fields: [userId], references: [id])
 }
 
 model Role {
   id          Int      @id @default(autoincrement())
   name        String
   code        String   @unique
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
   permissions String[]
+  storeId     Int?
+  store       Store?   @relation(fields: [storeId], references: [id])
   users       User[]
 }
 
+model Store {
+  id         Int        @id @default(autoincrement())
+  name       String
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+  ownerId    Int?
+  branchs    Branch[]
+  brands     Brand[]
+  categories Category[]
+  groups     Group[]
+  products   Product[]
+  roles      Role[]
+  owner      User?      @relation("Owner", fields: [ownerId], references: [id])
+  members    User[]
+}
+
 model Branch {
-  id          Int      @id @default(autoincrement())
-  name        String
-  phone       String?  @unique
-  email       String?  @unique
-  address     String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  createdById Int?
-  createdBy   User?    @relation(fields: [createdById], references: [id])
+  id        Int      @id @default(autoincrement())
+  name      String
+  phone     String?  @unique
+  email     String?  @unique
+  address   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  storeId   Int?
+  store     Store?   @relation(fields: [storeId], references: [id])
+  members   User[]
 }
 
 model Brand {
-  id          Int       @id @default(autoincrement())
-  name        String
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  createdById Int?
-  createdBy   User?     @relation(fields: [createdById], references: [id])
-  products    Product[]
+  id       Int       @id @default(autoincrement())
+  name     String
+  storeId  Int?
+  store    Store?    @relation(fields: [storeId], references: [id])
+  products Product[]
 }
 
 model Product {
@@ -90,35 +108,47 @@ model Product {
   brandId      Int?
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
+  storeId      Int?
   brand        Brand?    @relation(fields: [brandId], references: [id])
   category     Category? @relation(fields: [categoryId], references: [id])
   createdBy    User?     @relation(fields: [createdById], references: [id])
-  tags         Tag[]
+  store        Store?    @relation(fields: [storeId], references: [id])
+  tags         Tag[]     @relation("ProductToTag")
+}
+
+model Unit {
+  id Int @id @default(autoincrement())
+}
+
+model Group {
+  id         Int        @id @default(autoincrement())
+  name       String
+  storeId    Int?
+  categories Category[]
+  store      Store?     @relation(fields: [storeId], references: [id])
 }
 
 model Category {
-  id          Int       @id @default(autoincrement())
-  name        String
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  createdById Int?
-  createdBy   User?     @relation(fields: [createdById], references: [id])
-  products    Product[]
-  tags        Tag[]
+  id       Int       @id @default(autoincrement())
+  name     String
+  groupId  Int?
+  storeId  Int?
+  group    Group?    @relation(fields: [groupId], references: [id])
+  store    Store?    @relation(fields: [storeId], references: [id])
+  products Product[]
 }
 
 model Tag {
-  id         Int       @id @default(autoincrement())
-  label      String
-  categoryId Int?
-  productId  String?
-  category   Category? @relation(fields: [categoryId], references: [id])
-  product    Product?  @relation(fields: [productId], references: [id])
+  id       Int       @id @default(autoincrement())
+  label    String
+  products Product[] @relation("ProductToTag")
 }
 
-model Store {
-  id   Int    @id @default(autoincrement())
-  name String
+model Storage {
+  id        Int      @id @default(autoincrement())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 enum Gender {

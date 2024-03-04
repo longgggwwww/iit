@@ -8,6 +8,7 @@ export class UserService {
   constructor(private prisma: PrismaService) {}
 
   async create(dto: CreateUserDto) {
+    console.log(dto);
     return 'This action adds a new user';
   }
 

@@ -3,21 +3,21 @@ import {
   BadRequestException,
   Injectable,
   PipeTransform,
-} from "@nestjs/common";
+} from '@nestjs/common';
 
 @Injectable()
 export class TrimPipe implements PipeTransform {
   private isObj(obj: any): boolean {
-    return typeof obj === "object" && obj !== null;
+    return typeof obj === 'object' && obj !== null;
   }
 
   private trim(values) {
     Object.keys(values).forEach((key) => {
-      if (key !== "password") {
+      if (key !== 'password') {
         if (this.isObj(values[key])) {
           values[key] = this.trim(values[key]);
         } else {
-          if (typeof values[key] === "string") {
+          if (typeof values[key] === 'string') {
             values[key] = values[key].trim();
           }
         }
@@ -28,11 +28,11 @@ export class TrimPipe implements PipeTransform {
 
   transform(values: any, metadata: ArgumentMetadata) {
     const { type } = metadata;
-    if (type === "body") {
+    if (type === 'body') {
       if (this.isObj(values)) {
         return this.trim(values);
       }
-      throw new BadRequestException("Validation failed");
+      throw new BadRequestException('Validation failed');
     }
     return values;
   }
